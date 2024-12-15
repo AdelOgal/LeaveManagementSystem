@@ -1,23 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using LeaveManagementSystem.Web.Data;
-using LeaveManagementSystem.Web.Models.LeaveTypes;
-using AutoMapper;
+﻿using LeaveManagementSystem.Web.Common;
 using LeaveManagementSystem.Web.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace LeaveManagementSystem.Web.Controllers
 {
+    [Authorize(Roles = Roles.Administrator)]
     public class LeaveTypesController(ILeaveTypesService _leaveTypesService) : Controller
     {
-       
+
         private const string NameExistsValidationMessage = "This leave type already exists in the database";
 
-       
+
 
         /////////////////////////////////////////////////// GET: LeaveTypes /////////////////////////////////////////////
         public async Task<IActionResult> Index()
@@ -34,7 +27,7 @@ namespace LeaveManagementSystem.Web.Controllers
             {
                 return NotFound();
             }
-        
+
             var leaveType = await _leaveTypesService.Get<LeaveTypeReadOnlyVM>(id.Value);
 
             if (leaveType == null)
@@ -52,7 +45,7 @@ namespace LeaveManagementSystem.Web.Controllers
         }
 
         ///////////////////////////////////////////////// POST: LeaveTypes/Create ///////////////////////////////
-        
+
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -68,7 +61,7 @@ namespace LeaveManagementSystem.Web.Controllers
 
             if (ModelState.IsValid)
             {
-              await _leaveTypesService.Create(leaveTypeCreate);
+                await _leaveTypesService.Create(leaveTypeCreate);
                 return RedirectToAction(nameof(Index));
             }
             return View(leaveTypeCreate);
@@ -90,11 +83,11 @@ namespace LeaveManagementSystem.Web.Controllers
             }
 
             return View(leaveType);
-          
+
         }
 
         ////////////////////////////////////////////////// POST: LeaveTypes/Edit/5 ////////////////////////////
-       
+
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -170,9 +163,9 @@ namespace LeaveManagementSystem.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
-        
-  
-       
+
+
+
+
     }
 }
